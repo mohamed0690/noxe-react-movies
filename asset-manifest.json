@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/noxe-react-movies/static/css/main.75e622cd.css",
-    "main.js": "/noxe-react-movies/static/js/main.d15f3818.js",
+    "main.css": "/noxe-react-movies/static/css/main.6a9154bd.css",
+    "main.js": "/noxe-react-movies/static/js/main.097ffb83.js",
     "static/js/787.a6bfe980.chunk.js": "/noxe-react-movies/static/js/787.a6bfe980.chunk.js",
     "static/media/fa-solid-900.ttf": "/noxe-react-movies/static/media/fa-solid-900.4a2cd718d7031b732e76.ttf",
     "static/media/bootstrap.bundle.min.js.map": "/noxe-react-movies/static/media/bootstrap.bundle.min.js.04d03c94a2c4b9bf1965.map",
@@ -13,12 +13,12 @@
     "static/media/fa-v4compatibility.ttf": "/noxe-react-movies/static/media/fa-v4compatibility.0e3a648be390bd8cb094.ttf",
     "static/media/fa-v4compatibility.woff2": "/noxe-react-movies/static/media/fa-v4compatibility.68577e40f3e70067b5da.woff2",
     "index.html": "/noxe-react-movies/index.html",
-    "main.75e622cd.css.map": "/noxe-react-movies/static/css/main.75e622cd.css.map",
-    "main.d15f3818.js.map": "/noxe-react-movies/static/js/main.d15f3818.js.map",
+    "main.6a9154bd.css.map": "/noxe-react-movies/static/css/main.6a9154bd.css.map",
+    "main.097ffb83.js.map": "/noxe-react-movies/static/js/main.097ffb83.js.map",
     "787.a6bfe980.chunk.js.map": "/noxe-react-movies/static/js/787.a6bfe980.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.75e622cd.css",
-    "static/js/main.d15f3818.js"
+    "static/css/main.6a9154bd.css",
+    "static/js/main.097ffb83.js"
   ]
 }
