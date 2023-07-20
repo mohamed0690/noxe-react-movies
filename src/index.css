@@ -1,0 +1,174 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
+:root {
+  --bg-main: #f3efe0; /* Very light beige background */
+  --color-main: #434242; /* Dark grayish text color */
+  --light-bg: #222222; /* Very dark gray for accents */
+  --border-color: #22a39f; /* Teal for borders */
+  --light-color: #f3efe0; /* Very light beige for light background elements */
+  --shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px -1px,
+    rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px; /* Soft black shadow */
+}
+
+/* General styles */
+body {
+  background-color: var(--bg-main);
+  color: var(--color-main);
+  font-family: "Lumanosimo", cursive !important;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+}
+
+.center {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Loading circle animation */
+.circle {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 70%;
+  animation: ring 2s linear infinite;
+}
+
+@keyframes ring {
+  0% {
+    transform: rotate(0deg);
+    box-shadow: 1px 5px 2px #f16a10;
+  }
+  50% {
+    transform: rotate(180deg);
+    box-shadow: 1px 5px 2px #26d00c;
+  }
+  100% {
+    transform: rotate(360deg);
+    box-shadow: 1px 5px 2px #088de6;
+  }
+}
+
+.circle span {
+  color: #c72b2d;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 200px;
+  animation: text 3s ease-in-out infinite;
+}
+
+@keyframes text {
+  50% {
+    color: rgba(5, 0, 0);
+  }
+}
+
+/* Header styles */
+.navbar-nav {
+  text-decoration: none;
+}
+
+i {
+  cursor: pointer;
+}
+
+i:hover {
+  color: var(--color-main);
+  font-weight: 900;
+}
+
+/* Social media icons styles */
+.fa-facebook {
+  color: rgb(59, 89, 152);
+}
+.fa-linkedin {
+  color: rgb(10, 102, 194);
+}
+.fa-instagram {
+  color: rgb(195, 42, 163);
+}
+.fa-youtube {
+  color: rgb(255, 0, 0);
+}
+.fa-twitter {
+  color: rgb(29, 161, 242);
+}
+.fa-github {
+  color: #fff;
+}
+
+.fa-github:hover {
+  color: gray;
+}
+
+/* ... other styles ... */
+/* ... (previously defined CSS variables and styles) ... */
+
+/* Styles for the loading animation before the circle */
+.ring::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 70%;
+  box-shadow: 0 0 5px rgba(27, 145, 104, 0.3);
+}
+
+/* Divider styles */
+.brdr {
+  background-color: var(--border-color);
+  height: 1px;
+}
+
+/* Navigation styles */
+nav {
+  color: var(--border-color) !important;
+  text-decoration: none;
+}
+
+.noxe {
+  color: var(--light-bg);
+}
+
+/* Footer styles */
+footer {
+  background-color: rgba(13, 17, 22, 0.5);
+}
+
+/* Styles for the vote display */
+.vote {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #f1c40f;
+  color: #000;
+  font-size: 20px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Product card hover styles */
+.product:hover {
+  box-shadow: var(--shadow);
+  border: solid 1px var(--border-color);
+}
+
+.movie-details {
+  font-family: "Playfair Display", serif;
+}
+footer {
+  font-family: "Playfair Display", serif;
+}
+/* Social media icons styles */
+/* ... (previously defined styles for social media icons) ... */
