@@ -1,135 +1,80 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import React from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import $ from "jquery"
 
-const socialMediaLinks = [
-  { platform: "facebook", url: "https://www.facebook.com/mohamed069cbb/" },
-  {
-    platform: "linkedin",
-    url: "https://www.linkedin.com/in/mohamed-mahrous-428557153/",
-  },
-  { platform: "github", url: "https://github.com/mohamed0690" },
-  { platform: "twitter", url: "http://twitter.com/" },
-  { platform: "youtube", url: "http://youtube.com" },
-];
+const Navbar = ({userData,removeUserData}) => {
+let navigate = useNavigate()
 
-const generateSocialMediaLinks = () => {
-  return socialMediaLinks.map((link) => (
-    <Link
-      key={link.platform}
-      target="_blank"
-      to={link.url}
-      className="text-decoration-none me-2"
-    >
-      <i className={`fab fa-${link.platform} mx-1`}></i>
-    </Link>
-  ));
-};
+const searching = (event)=>{
+  navigate(`/search/${event.target.value?event.target.value:"movie"}`)
+}
 
-export default function Navbar({ userData, logOut }) {
-  const isLoggedIn = userData !== null;
-  const loginRegisterLinks = isLoggedIn ? null : (
-    <>
-      <li className="nav-item product">
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "nav-link active" : "nav-link"
-          }
-          to="login"
-        >
-          Login
-        </NavLink>
-      </li>
-      <li className="nav-item product">
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "nav-link active" : "nav-link"
-          }
-          to="register"
-        >
-          Register
-        </NavLink>
-      </li>
-    </>
-  );
+$(".nav-link").click(function(){
+  $(this).addClass("active")
+  $(this).parent().siblings().children().removeClass("active")
+})
 
-  return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary navbar-dark bg-dark fixed-top">
-      <div className="container">
-        <Link className="navbar-brand" to="/">
-          <h2 className="noxe  text-white">NOXE</h2>
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
+
+  return <>
+    <nav className="navbar navbar-expand-sm px-5 fixed-top">
+      <div className="container align-items-center">
+        <Link className="navbar-brand text-white fs-2 " to="/"><span className='text-info fw-bold'>N</span>oxe</Link>
+        <button className="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <i className="fa-solid fa-bars text-white"></i>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          {userData !== null ? (
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <NavLink
-                  className={({ isActive }) =>
-                    isActive ? "nav-link active" : "nav-link"
-                  }
-                  to="/"
-                >
-                  Home
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className={({ isActive }) =>
-                    isActive ? "nav-link active" : "nav-link"
-                  }
-                  to="movies"
-                >
-                  Movies
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className={({ isActive }) =>
-                    isActive ? "nav-link active" : "nav-link"
-                  }
-                  to="tvShow"
-                >
-                  TvShow
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className={({ isActive }) =>
-                    isActive ? "nav-link active" : "nav-link"
-                  }
-                  to="people"
-                >
-                  People
-                </NavLink>
-              </li>
-            </ul>
-          ) : null}
+        <div className="collapse navbar-collapse  " id="collapsibleNavId">
+          <ul className="navbar-nav me-auto  mt-lg-0 d-flex align-items-center  ">
 
-          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li className="nav-item d-flex align-items-center">
-              {generateSocialMediaLinks()}
+    <li className="nav-item">
+              <Link className="nav-link here active" to="/">Home</Link>
             </li>
-            {loginRegisterLinks}
-            {isLoggedIn ? (
-              <li className="nav-item product">
-                <Link onClick={logOut} className="cursor-pointer nav-link">
-                  Logout
+            <li className="nav-item dropdown">
+          <Link className="nav-link here dropdown-toggle" to="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Discover</Link>
+          <div className="dropdown-menu" aria-labelledby="dropdownId">
+            <Link className="dropdown-item" to="movieDiscover">Movie</Link>
+            <Link className="dropdown-item" to="tvShowDiscover">Tv Show</Link>
+          </div>
+        </li>
+            <li className="nav-item">
+              <Link className="nav-link here" to="movies">Movies</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link here" to="tvshow">TvShow</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link here" to="actors">Actors</Link>
+            </li>
+
+          </ul>
+          <ul className="navbar-nav ms-auto mt-2 mt-lg-0 d-flex align-items-center">
+
+        <li className="nav-item">
+          <input type="search" onChange={searching} width={50} placeholder="Search By Movie Name" aria-label="Search" className="form-control me-2"/>
+        </li>
+    {userData? <>
+          <li className="nav-item">
+              <button className='btn btn-outline-info ms-3' onClick={()=>removeUserData()}>LogOut</button>
+            </li></>
+            :<>
+            <li className="nav-item">
+              <Link className="nav-link" to="login">
+                <button className='btn btn-outline-info'>Login</button>
                 </Link>
-              </li>
-            ) : null}
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="register">
+              <button className='btn btn-outline-info'>Register</button>
+              </Link>
+            </li>
+            </>}
           </ul>
         </div>
-      </div>
+        </div>
     </nav>
-  );
+    
+    </>
 }
+
+export default Navbar

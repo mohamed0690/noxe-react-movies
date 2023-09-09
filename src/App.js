@@ -1,56 +1,77 @@
-import logo from './logo.svg';
-import './App.css';
-import toast, { Toaster } from 'react-hot-toast';
-import LayOut from './Components/LayOut/LayOut';
-import Home from './Components/Home/Home';
-import Movies from './Components/Movies/Movies';
-import People from './Components/People/People';
-import TvShow from './Components/TvShow/TvShow';
-import MovieDetails from './Components/MovieDetails/MovieDetails';
+import React, { useEffect, useState } from "react";
+import { RouterProvider, createBrowserRouter, createHashRouter } from "react-router-dom";
+import Layout from "./Components/Layout/Layout";
+import Register from "./Components/Register/Register";
+import Movies from "./Components/Movies/Movies";
+import Tvshow from "./Components/Tvshow/Tvshow";
+import { Toaster } from 'react-hot-toast';
+import jwtDecode from 'jwt-decode';
+import NotFound from "./Components/NotFound/NotFound";
+import Actors from './Components/Actors/Actors';
 import Login from './Components/Login/Login';
-import Register from './Components/Register/Register';
-import NotFound from './Components/NotFound/Notfound.jsx';
-import { createHashRouter, RouterProvider } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import jwt_decode from 'jwt-decode';
-import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
+// import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
+import {Provider} from "react-redux"
+import {store} from './Redux/Store';
+import MoviesCard from "./Components/MoviesCard/MoviesCard";
+import MovieDetails from './Components/MovieDetails/MovieDetails';
+import ActorDetails from './Components/ActorDetails/ActorDetails';
+import MovieDiscover from './Components/MovieDiscover/MovieDiscover';
+import TvShowDiscover from './Components/TvShowDiscover/TvShowDiscover';
+import Search from './Components/Search/Search';
+import MovieCard2 from './Components/MovieCard2/MovieCard2';
+import MovieDetails2 from './Components/MovieDetails2/MovieDetails2';
+const LazyLoading = React.lazy(()=> import("./Components/Home/Home"));
 
-export default function App() {
 
-  const [userData, setUserData] = useState(null);
+const App = () => {
 
-
-  useEffect(() => {
-    if (localStorage.getItem('userToken') !== null) {
-      saveUserData();
+  useEffect(()=>{
+    if(localStorage.getItem("userToken")!==null){
+      saveUserData()
     }
-  }, []);
+  },[])
 
-  function saveUserData() {
-    let encodedToken = localStorage.getItem('userToken');
-    let decodedToken = jwt_decode(encodedToken);
-    setUserData(decodedToken);
-  }
+  const [userData, setUserData] = useState(null)
+const saveUserData = () =>{
+  let encodedToken = localStorage.getItem("userToken")
+  let DecodedToken = jwtDecode(encodedToken)
+  setUserData(DecodedToken)
+}
 
-
+  
   let routers = createHashRouter([
     {
-      path: "", element: <LayOut setUserData={setUserData} userData={userData} />, children: [
-        { index: true, element: <ProtectedRoute> <Home /> </ProtectedRoute> },
-        { path: "movies", element: <ProtectedRoute> <Movies /> </ProtectedRoute> },
-        { path: "moviedetails/:id/:mediaType", element: <ProtectedRoute> <MovieDetails /> </ProtectedRoute> },
-        { path: "people", element: <ProtectedRoute> <People /> </ProtectedRoute> },
-        { path: "tvShow", element: <ProtectedRoute> <TvShow /> </ProtectedRoute> },
-        { path: "login", element: <Login saveUserData={saveUserData} /> },
-        { path: "register", element: <Register saveUserData={saveUserData} /> },
+      path: "",
+      element: <Layout userData={userData} setUserData={setUserData}/>,
+      children: [
+        { index: true, element:
+        <React.Suspense fallback="Loading...">
+          <LazyLoading/>
+        </React.Suspense> },
+        { path: "movieDiscover", element:<MovieDiscover/>},
+        { path: "tvShowDiscover", element:<TvShowDiscover/>},
+        { path: "movies", element: <Movies/> },
+        { path: "tvshow", element: <Tvshow/> },
+        { path: "actors", element: <Actors/> },
+        { path: "search/:type", element:<Search/>},
+        { path: "moviesCard", element:<MoviesCard/> },
+        { path: "movieCard2", element:<MovieCard2/> },
+        { path: "movieDetails/:id/:media", element:<MovieDetails/> },
+        { path: "movieDetails2/:id/:media", element:<MovieDetails2/> },
+        { path: "actorDetails/:id/:media", element:<ActorDetails/> },
+        { path: "login", element: <Login  saveUserData={saveUserData}/> },
+        { path: "register", element:<Register/>},
         { path: "*", element: <NotFound /> },
-      ]
-    }
+      ],
+    },
   ]);
 
-  return <>
-    <RouterProvider router={routers}></RouterProvider>
-    <Toaster />
-  </>
+return <>
+  <Provider store={store} >
+      <Toaster/>
+      <RouterProvider router={routers}/>
+  </Provider>
+</>
+};
 
-}
+export default App;

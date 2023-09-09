@@ -1,95 +1,213 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { movieActors, movieDetails, movieLinks, movieVideos, recommendationsMovies } from '../../Redux/movieDetailsSlice'
+import Slider from "react-slick"
+import ActorCard from '../ActorCard/ActorCard'
+import MovieCard2 from './../MovieCard2/MovieCard2';
+import { Helmet } from 'react-helmet'
 
-const API_BASE_URL = 'https://api.themoviedb.org/3/';
-const API_KEY = 'cf4a1f832611fa30173f10337b20dba4';
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+import Loading from './../Loading/Loading';
 
-export default function MovieDetails() {
-  const [details, setDetails] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const { id, mediaType } = useParams();
 
-  async function fetchDetails(id, mediaType) {
-    try {
-      const { data } = await axios.get(
-        `${API_BASE_URL}${mediaType}/${id}?api_key=${API_KEY}&language=en-US`
-      );
-      setDetails(data);
-      setIsLoading(false);
-    } catch (error) {
-      console.log('Error:', error);
-      setIsLoading(false);
-    }
+const MovieDetails = () => {
+  let {media , id} =useParams()
+  let dispatch = useDispatch()
+  let {loading}=useSelector((state)=>state.movieDetails)
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 8,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    cssEase: "linear",
+    pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 1286.7,
+        settings: {
+          slidesToShow: 6,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 1160,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 770,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 400,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        }
+      },
+    ]
   }
 
-  useEffect(() => {
-    fetchDetails(id, mediaType);
-  }, [id, mediaType]);
+const [movies, setMovies] = useState("")
+const [actorsDetails, setActorsDetails] = useState([])
+const [videos, setMovieVideos] = useState([])
+const [moviesList, setMoviesList] = useState([])
+const [link, setLink] = useState(null)
 
-  const renderTitle = () => {
-    return details.title || details.name || 'Movie Title Not Available';
-  };
 
-  const renderOverview = () => {
-    return details.overview || details.biography || 'Overview Not Available';
-  };
-
-  const renderAdditionalDetails = () => {
-    return (
-      <>
-        {details.vote_average && (
-          <h6 className='h4'>
-            Views Rate : <span className='text-info mx-2'>{details.vote_average}</span>
-          </h6>
-        )}
-        {details.release_date && (
-          <h6 className='h4'>
-            Release Date : <span className='text-info mx-2'>{details.release_date}</span>
-          </h6>
-        )}
-        {details.runtime && (
-          <h6 className='h4'>
-            Runtime : <span className='text-info mx-2'>{details.runtime} Minutes</span>
-          </h6>
-        )}
-        {details.original_language && (
-          <h6 className='h4'>
-            Original Language : <span className='text-info mx-2'>{details.original_language}</span>
-          </h6>
-        )}
-      </>
-    );
-  };
-
-  return (
-    <>
-      <Helmet>
-        <title>Movie Details</title>
-      </Helmet>
-
-      {isLoading ? (
-        <div className='text-center py-5'>
-          <i className='fas fa-spinner fa-spin fa-3x'></i>
-          <p>Loading...</p>
-        </div>
-      ) : (
-        <div className='row py-4'>
-          <div className='col-md-3 py-4'>
-            <img src={`${IMAGE_BASE_URL}${details.poster_path || details.profile_path}`} className='w-100 product' alt={renderTitle()} />
-          </div>
-
-          <div className='col-md-7 py-4 d-flex align-items-center'>
-            <div>
-              <h2>{renderTitle()}</h2>
-              <p className='text-muted my-4'>{renderOverview()}</p>
-              {renderAdditionalDetails()}
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
+const getMoviesHere = async ()=>{
+let elements = await dispatch(movieDetails({media,id}))
+setMovies(elements.payload)
 }
+
+const getMoviesLinks = async()=>{
+  let Links = await dispatch(movieLinks({media,id}))
+  if(Links?.payload?.US?.link){
+    setLink(Links?.payload?.US?.link)
+  }
+  
+}
+const watchMovie = async()=>{
+  let Links = await dispatch(movieLinks({media,id}))
+  window.location.href = Links.payload.US.link 
+  
+}
+
+const getActorsDetails = async()=>{
+  let actors = await dispatch(movieActors({media,id}))
+  setActorsDetails(actors.payload)
+}
+
+const getMoviesVideos = async()=>{
+  let Videos = await dispatch(movieVideos({media,id}))
+  setMovieVideos(Videos.payload)
+}
+
+const getRecommendationsMovies = async()=>{
+  let Movies = await dispatch(recommendationsMovies({media,id}))
+  setMoviesList(Movies.payload)
+}
+
+
+useEffect(()=>{
+  getMoviesLinks(id)
+  getMoviesVideos(id)
+  getMoviesHere(media,id)
+  getActorsDetails(id)
+  getRecommendationsMovies(id)
+
+},[])
+
+
+  return <>
+<Helmet>
+<title>Movie Details</title>
+</Helmet>
+{!loading?<>
+  {movies? <section>
+    <div className="background position-relative" style={{backgroundImage: `url(https://image.tmdb.org/t/p/original${movies?.backdrop_path})`}}>
+    <div className="layer"></div>
+    <div className="container-fluid px-5 py-5 ">
+    <div className="row my-5 py-5 position-relative">
+
+      <div className="col-md-3 col-12">
+        <img className='img-fluid rounded-4' loading='lazy' src={`https://image.tmdb.org/t/p/w500${movies?.poster_path}`} alt="" height={400} />
+        {link?<button type='button' onClick={watchMovie} className='btn btn-info w-100 text-white'>Watch the movie at TMDB</button>:null}
+      </div>
+
+    <div className="col-md-8">
+      <h2 className='my-2'>{movies?.original_title} {movies?.original_name  } <span className='text-warning small'>{movies?.release_date?.slice(0,4)}  {movies?.first_air_date?.slice(0,4)} </span></h2>
+      <p className='text-light lh-3 fw-medium p-2 fs-4'>{movies?.overview}</p>
+
+      {movies.genres.map((type)=><span className='p-2  fst-italic text-bg-info text-black rounded-2 me-4 fs-5 d-none  d-md-inline' key={type.id}>{type.name}</span>)}
+
+<div className='d-flex justify-content-between align-items-center p-5 d-none d-md-flex'>
+
+<div className='rating'>
+<h2 className='h4'>Vote_average</h2>
+<h2 className="rate m-auto h5">{movies?.vote_average.toFixed(1)} </h2>
+</div>
+
+<div>
+  <h2 className='h4'>Popularity</h2>
+  <h2 className='text-center m-auto h5'>{movies.popularity} </h2>
+</div>
+
+<div>
+  <h2 className='h4'>Vote Count</h2>
+  <h2 className='text-center m-auto h5'>{movies.vote_count}</h2>
+</div>
+
+
+</div>
+
+
+    </div>
+  {actorsDetails.length>8?<div>
+  <h2 className='px-5 py-3 fst-italic'>Movie Crew : -</h2>
+<Slider  {...settings}>
+{actorsDetails.map((movie,index)=><ActorCard media={"person"} movie={movie} key={index}/>)}
+</Slider>
+</div>:null}
+
+
+<h2 className='px-5 py-3 fst-italic'>Trailers and Videos : -</h2>
+{videos?
+<div className="row">
+  <div className=" col-lg-6 my-2">
+  <iframe  src={`https://www.youtube-nocookie.com/embed/${videos[0]?.key }`} height="315" title="data.name" className="videos w-100"> </iframe>
+  </div>
+  <div className="col-lg-6">
+  <iframe src={`https://www.youtube-nocookie.com/embed/${videos[1]?.key}`} height="315" title="data.name" className="videos w-100"> </iframe>
+  </div>
+</div>:null}
+
+
+
+
+{moviesList.length>6?<div>
+<Slider  {...settings}>
+{moviesList.map((movie,index)=><MovieCard2 media={"movie"} movie={movie} key={index}/>)}
+</Slider></div>:null}
+    </div>
+    </div>
+    </div>
+
+    </section>:null}</>:<Loading/>}
+
+    </>
+
+}
+
+export default MovieDetails
+

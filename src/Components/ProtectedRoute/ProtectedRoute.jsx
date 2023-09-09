@@ -1,12 +1,13 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React from 'react'
+import { Navigate } from 'react-router-dom'
 
-export default function ProtectedRoute({ children }) {
-  const userToken = localStorage.getItem("userToken");
-
-  if (!userToken) {
-    return <Navigate to={"/login"} />;
-  } else {
-    return <>{children}</>;
-  }
+const ProtectedRoute = (props) => {
+if(localStorage.getItem("userToken")===null){
+  return <Navigate to={'/login'}/>
+}else{
+  return props.children
 }
+
+}
+
+export default ProtectedRoute
