@@ -1,6 +1,6 @@
 # Noxe Movies
 
-<img src="https://res.cloudinary.com/dcqttctnu/image/upload/v1694338894/screencapture-mohamed0690-github-io-noxe-react-movies-2023-09-10-12_39_15_izzhek.png" alt="Search TextInput" width="100%" height="" /> 
+<img src="https://res.cloudinary.com/dcqttctnu/image/upload/v1694545104/Screenshot_from_2023-09-12_21-56-42_bq83hg.png" alt="Search TextInput" width="100%" height="" /> 
 Noxe is a website designed to provide you with daily trending items, including movies, TV shows, and information about people in the entertainment industry. To access detailed information, you'll need to log in to the platform. This project is built using various technologies such as React.js, Redux Toolkit, React Router DOM, Bootstrap, SCSS, Formik, Yup, Axios, JWT-decode, React Paginate, React Hot Toast, and React Helmet.
 
 ## Table of Contents
